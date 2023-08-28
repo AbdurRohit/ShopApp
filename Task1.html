@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <style>
+    #text {
+
+      color: rgb(241, 30, 65);
+    }
+
+    #show2 {
+      border-style: hidden; 
+      padding: 10px 20px 30px 40px;
+    }
+    strong{
+      color:rgb(242, 18, 18)
+    }
+
+ select {
+  padding: 1px 20px 3px 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #333;
+  width: 300px;
+}
+
+
+select option {
+  padding: 8px;
+} 
+
+ select:hover {
+  border-color: #66afe9;
+} 
+
+
+ select:focus {
+  border-color: #5bc0de;
+  box-shadow: 0 0 5px rgba(91, 192, 222, 0.5);
+}  
+#h11{
+  text-align: center;
+  padding-top: 10%;
+  font-size: x-large;
+  font-style: italic;
+  font-family: consolas;
+
+}
+nav:hover{
+  cursor: alias;
+}
+  </style>
+
+  <div id="init"></div>
+
+  <script >
+    init()
+function init(){
+  let str = `<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+  <a class="navbar-brand" href="#" >Store System</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" onclick="showAllProducts()">Show Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="addProductForm()">Add a Product</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="show2nd()">Show Product-2</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="makePurchaseForm()">Purchase</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="stockView()">Stock</a>
+      </li>
+    </ul>
+  </div>
+</div>
+</nav>
+
+<!-- Main content -->
+<div class="container mt-4" id="main-content">
+  <div id = "h11" <h1>// Select any nav items <br> Check for any functionl errors<br>Thanks //<br></h1></div>
+</div>`
+document.getElementById('init').innerHTML = str
+}
+
+const products = [
+    {
+      name: 'Pepsi',
+      price: 25.99,
+      discount: '2%',
+      supplier: 'Supplier A',  
+      delivery: 'Not Available'
+    },
+    {
+      name: 'Colgate',
+      price: 39.95,
+      discount: 'None',
+      supplier: 'Supplier B',  
+      delivery: 'Available'    
+    },
+    {
+      name: 'Snickers',        
+      price: 12.49,
+      discount: '5%',
+      supplier: 'Supplier C',  
+      delivery: 'Available'    
+    },
+    {
+      name: 'Nescafe',
+      price: 8.99,
+      discount: '2%',
+      supplier: 'Supplier D',  
+      delivery: 'Not Available'
+    },
+    {
+      name: 'Dairy Milk',      
+      price: 59,
+      discount: 'None',        
+      supplier: 'Supplier E',  
+      delivery: 'Available'    
+    },
+    {
+      name: 'Maggi',
+      price: 18.75,
+      discount: '2%',
+      supplier: 'Supplier A',
+      delivery: 'Available'
+    },
+    {
+      name: 'Snickers',
+      price: 7.89,
+      discount: '2%',
+      supplier: 'Supplier B',
+      delivery: 'Not Available'
+    },
+    {
+      name: 'Nescafe',
+      price: 29.99,
+      discount: '4%',
+      supplier: 'Supplier C',
+      delivery: 'Available'
+    },
+    {
+      name: 'Dairy Milk',
+      price: 14.5,
+      discount: '5%',
+      supplier: 'Supplier D',
+      delivery: 'Not Available'
+    },
+    {
+      name: 'Pepsi',
+      price: 49.95,
+      discount: '2%',
+      supplier: 'Supplier E',
+      delivery: 'Available'
+    }
+  ]
+const main = document.getElementById('main-content')//main-div
+const disArr = [
+  { percentage: '2%', value: 0.02 },
+  { percentage: '5%', value: 0.05 },
+  { percentage: 'None', value: 0 },
+];
+
+const suppliers = [];
+const supplierIndex = {};
+
+for (let i = 0; i < products.length; i++) {
+  const supplier = products[i].supplier;
+  if (supplierIndex[supplier] === undefined) {
+    supplierIndex[supplier] = true;
+    suppliers.push(supplier);
+  }
+}
+console.log(suppliers)
+const purchase = [{purchaseId:'PUR001',Product:'Pepsi',Quantity:4},{purchaseId:'PUR002',Product:'Colgate',Quantity:3},{purchaseId:'PUR003',Product:'Snickers',Quantity:2},{purchaseId:'PUR005',Product:'Nescafe',Quantity:2},{purchaseId:'PUR008',Product:'Dairy Milk',Quantity:5},{purchaseId:'PUR009',Product:'Maggi',Quantity:5},{purchaseId:'PUR011',Product:'Snickers',Quantity:3},{purchaseId:'PUR016',Product:'Nescafe',Quantity:4},{purchaseId:'PUR017',Product:'Dairy Milk',Quantity:4},{purchaseId:'PUR019',Product:'Pepsi',Quantity:5},{purchaseId:'PUR021',Product:'Colgate',Quantity:4},{purchaseId:'PUR023',Product:'Maggi',Quantity:2}]
+
+const puProd = [];
+for (let i = 0; i < products.length; i++) {
+  const productName = products[i].name;
+  if (!puProd.includes(productName)) {
+    puProd.push(productName);
+  }
+}
+
+console.log(puProd);
+// const puProd = products.map(obj=>{return obj.name})
+const errors = {}
+var mypr = {}
+const errors1 = {}
+
+function removeProduct(index) {
+  products.splice(index, 1)
+  console.log(products)
+  showAllProducts()
+}
+function makeinput(label, type, value='', id, ph, err='' , wildCard) {
+  let str = `<label class="form-label">` + label + `</label> <input type="` + type + `" value="` + value + `" class="form-control" id="` + id + `" placeholder="` + ph + `" ` +wildCard+` >` 
+  str +=  err ? `<span class="text-danger">`+err+`</span><br>` : ''
+  return str
+}
+
+function editProductForm(index,err={},values={}) {
+      let obj = products[index]
+      if((values.price)=='')
+        obj.price = ''
+      else
+        values.price = obj.price
+      
+      let str = `<h1>Update product</h1>
+    
+    <form id="product-form">
+      <div class="mb-3">
+      `+ makeinput('Product name', 'text', obj.name , 'product-name', 'Enter name','','disabled') +
+        `
+      <div class="mb-3">
+        `+ makeinput('Price', 'number', values.price , 'product-price', 'Enter price',err.price||'') + `
+      </div>
+      <div class="mb-3">
+        `+makeRBedit(disArr,err.discount||'',index)+`
+      </div>
+      <div class="mb-3">
+        `+ makeDD(suppliers, obj.supplier||"Select Supplier", "supplierDD", err.supplier)+ `
+      </div>
+      <div class="mb-3">
+        `+  `<div class="form-check">
+<input class="form-check-input" type="checkbox" value="Deliver" id="DelCb">
+<label class="form-check-label" for="flexCheckDefault">
+Delivery avilable
+</label>
+</div>`+ `</div>
+      <button type="submit" class="btn btn-primary" onclick="addNewPro(`+ index + `)">Submit</button>
+    </form>`
+
+    let b = products[index].discount
+    console.log(b);
+    let radioElement = document.getElementsByName("flexRadioDefault"+b)
+    radioElement.checked = true
+    console.log(radioElement);
+    // console.log("Selected: ",b)
+    main.innerHTML = str
+    }
+
+//Add product
+function addProductForm(err ={}, values = {}) {
+  let m=[];
+  console.log("err",err);
+  console.log("val: ",values)
+  for(let i =0;i<disArr.length;i++){
+    console.log(i);
+    if(disArr[i].percentage===values.productDiscount){
+      console.log("Found at ",i);
+      m.push(i)
+    }
+  }
+  console.log("Found at m 0 ",m[0]);
+  main.innerHTML = `<h1>Add Product</h1>
+  <div class="mb-3">` +
+    makeinput('product name', 'text', values.productName || '', 'product-name', 'Enter name', err.product || err.unique||'') +
+    `</div>
+  <div class="mb-3">` +
+    makeinput('Price', 'number', values.productPrice || '', 'product-price', 'Enter price', ''||err.price) +
+    `</div> Discount` + makeRBadd(disArr,err.discount||'',m[0]) +
+    `<br>` + makeDD(suppliers, values.productSupplier||"Select Suppliers", "supplierDD", ''||err.supplier) +
+    `<div class="form-check">
+<input class="form-check-input" type="checkbox" value="Deliver" id="DelCb" ${values.productDelivery== 'Delivery Available' ? 'checked' : ''}>
+<label class="form-check-label" for="flexCheckDefault">
+Delivery available
+</label>
+</div>` +
+    `<button type="submit" class="btn btn-primary" onclick="addNewPro()">Submit</button>`
+    
+}
+function makeRBedit(arr, err = {}, index) {
+  let str = `<br>`;//❌
+  let radioGroupName = `RadioGr${index || ''}`;
+  str += arr.map((obj,pos) => {
+    let isChecked = !isNaN(index) && products[index].discount==obj.percentage ? ' checked' : '';
+    return `<div class="form-check">
+              <input class="form-check-input" type="radio" name="${radioGroupName}" id="${obj.percentage}" value="${obj.value}"${isChecked}>
+              <label class="form-check-label" for="${obj.percentage}">${obj.percentage}</label>
+            </div>`;
+  }).join('');
+
+  str += err ? `<br><span class="text-danger">${err}</span><br>` : '';
+
+  return str;
+}
+
+function makeRBadd(arr, err = {}, index) {
+  let str = `<br>`;
+// ✔✔
+  let radioGroupName = `RadioGr${index || ''}`;
+  str += arr.map((obj,pos) => {
+    let isChecked = !isNaN(index) && pos==index ? ' checked' : '';
+    return `<div class="form-check">
+              <input class="form-check-input" type="radio" name="${radioGroupName}" id="${obj.percentage}" value="${obj.value}"${isChecked}>
+              <label class="form-check-label" for="${obj.percentage}">${obj.percentage}</label>
+            </div>`;
+  }).join('');
+
+  str += err ? `<br><span class="text-danger">${err}</span><br>` : '';
+
+  return str;
+}
+
+
+function addNewPro(index){
+  let productName = document.getElementById('product-name').value;
+  let productPrice = document.getElementById('product-price').value;
+  let productSupplier = document.getElementById('supplierDD').value;
+  let productDiscount = disArr.map(obj => {
+  if (document.getElementById(obj.percentage).checked)
+      return obj.percentage;
+  }).join('');
+  if(document.getElementById('DelCb').checked == true)
+    productDelivery = 'Delivery Available'
+  else 
+    productDelivery = 'Not Available'
+
+  let newObj = { name: productName, price: productPrice, discount: productDiscount, supplier: productSupplier, delivery: productDelivery }
+  if(!isNaN(index)){
+    if(validateNewProd(newObj,index)){
+    products[index].price = productPrice
+    products[index].discount = productDiscount
+    products[index].supplier = productSupplier
+    products[index].delivery = productDelivery
+    showAllProducts();
+    }
+    else
+    {
+      editProductForm(index,errors,{price: productPrice,supplier: productSupplier})
+    }
+    }
+  else{
+    if (validateNewProd(newObj)) {
+      products.push(newObj);
+      showAllProducts();
+    } 
+    else {
+      addProductForm(errors, {
+        productName,
+        productPrice,
+        productDiscount,
+        productSupplier,
+        productDelivery
+      });
+    }
+  }
+}
+
+  
+  
+  
+function validateNewProd(object,index){
+if(!isNaN(index)){
+  errors.product = (object.name) ? '' : 'Product name is mandatory'
+  errors.price = object.price ? '' : 'Enter the correct price'
+  errors.discount = object.discount ? '' : 'Choose the discount'
+  errors.supplier = (object.supplier !== 'Select Suppliers') ? '' : 'Select supplier'
+  console.log(errors);
+  return !(errors.product || errors.price || errors.discount || errors.supplier)
+}
+else{
+ let findobj = products.find(obj=>{
+    return obj.name == object.name
+  })
+  if (findobj){
+console.log(findobj);
+  }
+  else{
+    findobj = { name: 'Product A', price: 25.99, discount: '2%', supplier: 'Supplier A', delivery: 'Not Available' }
+  }
+  let flag = true
+  let checkunique = findobj.name == object.name ? flag = false : flag = true
+  errors.unique = checkunique ? '' : 'Product name must me unique '
+  errors.product = (object.name) ? '' : 'Product name is mandatory'
+  errors.price = object.price ? '' : 'Enter the correct price'
+  errors.discount = object.discount ? '' : 'Choose the discount'
+  errors.supplier = (object.supplier !== 'Select Suppliers') ? '' : 'Select supplier'
+  console.log(errors);
+  return !(errors.product || errors.price || errors.discount || errors.supplier|| errors.unique)
+
+}
+}
+
+
+
+function makeDD(arr, text,id,err='') {
+  let str = `<select class = "" aria-label="Default select example" id = "`+id+`"><option selected disabled>` + text + `</option>`
+  str += arr.map(obj => {
+    return `<option value="`+ obj + `">` + obj + `</option>`
+  })
+  str+= `</select>`
+  str+=  err ? `<br><span class="text-danger">`+err+`</span>` : ''
+  return str
+  }
+function showAllProducts() {
+  main.innerHTML = ` <h1 id="show-product">Show all Product</h1>
+<div class="table-responsive">
+  <table class="table table-bordered ">
+    <thead class="table-primary">
+      <tr>
+        <th onclick="sortTable1(1)">Product Name</th>
+        <th onclick="sortTable1(2)">Price</th>
+        <th onclick="sortTable1(3)">Discount</th>
+        <th onclick="sortTable1(4)">Supplier</th>
+        <th onclick="sortTable1(5)">Delivery</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody id="product-table-body">
+  
+    </tbody>
+  </table>`
+  let tableBody = document.getElementById('product-table-body');
+  let tableRows = '';
+  products.map((product, index) => {
+    tableRows += `
+    <tr>
+      <td>`+ product.name + `</td>
+      <td>`+ product.price + `</td>
+      <td>`+ product.discount + `</td>
+      <td>`+ product.supplier + `</td>
+      <td>`+ product.delivery + `</td>
+      <td><button onclick="editProductForm(`+ index + `)" class="btn btn-dark">Edit</button>
+            <button onclick = "removeProduct(`+ index + `)"class="btn btn-danger">Remove</button></td>
+    </tr>
+  `;
+  
+  });
+  tableBody.innerHTML = tableRows;
+}
+
+function sortTable1(index) {
+  switch(index) {
+      case 1:
+          let srtName = products.sort((a, b) => a.name.localeCompare(b.name));
+          console.log(srtName);
+          showAllProducts();
+          break;
+      case 2:
+          products.sort((a, b) => a.price - b.price);
+          showAllProducts();
+          break;
+      case 3:
+          const discountMapping = disArr.reduce((acc, dis) => {
+              acc[dis.percentage] = dis.value;
+              return acc;
+          }, {});
+          console.log(discountMapping);
+          products.sort((a, b) => {
+              const discountA = discountMapping[a.discount];
+              const discountB = discountMapping[b.discount];
+              return discountA - discountB;
+          });
+          console.log("yes");
+          showAllProducts();
+          break;
+      case 4:
+          products.sort((a, b) => a.supplier.localeCompare(b.supplier));
+          showAllProducts();
+          break;
+      case 5:
+          products.sort((a, b) => a.delivery.localeCompare(b.delivery));
+          showAllProducts();
+          break;
+      default:
+          console.log("Invalid index.");
+          break;
+  }
+}
+
+//Added this line
+
+// Call the function to generate the table on page load
+function show2nd() {
+let contentDiv = document.getElementById("main-content");
+let employeesHtml = '<h2>Product view 2</h2><ul class="list-group">';
+employeesHtml+= `
+<div class="row row-cols-3">`
+products.map(obj => {
+    employeesHtml += '<button class="col" id = "show2" ><li class="list-group-item">';
+    employeesHtml += '<strong>Name:</strong> ' + obj.name + '<br>';
+    employeesHtml += '<strong>Price:</strong> ' + obj.price + '<br>';
+    employeesHtml += '<strong>discount:</strong> ' + obj.discount+'<br>'
+    employeesHtml += '<strong>supplier:</strong> ' + obj.supplier+'<br>'
+    employeesHtml += '<strong>delivery:</strong> ' + obj.delivery+'<br>'
+    employeesHtml += '</li></buttons>';
+});
+contentDiv.innerHTML = employeesHtml 
+}
+
+function makePurchaseForm( err = {}, values = {},index) {
+  if(!isNaN(index)){
+    console.log(index);
+    console.log("Valuesob",values);
+    let workobj = purchase[index]
+      values.purchaseId = workobj.purchaseId
+      values.product = workobj.Product
+      if((values.quantity)=='')
+        workobj.Quantity = ''
+      else
+        values.quantity = workobj.Quantity
+  let contentDiv = document.getElementById("main-content");
+  contentDiv.innerHTML =
+    `<h1>Update Form</h1>` +
+    makeinput("Purchase ID", "text", values.purchaseId || "", "purchase-id", "", err.purchaseId || errors1.unique,'disabled') +
+    `<div class="mb-3">Name<br>` + makeDD(puProd, values.product||"Product Name", "product-name", err.product) +
+    `<div class="mb-3">` + makeinput('Quantity', 'number', workobj.Quantity||values.quantity || '', 'product-quantity', '', err.quantity) + `</div>
+  <button onclick="addmakepurchase(`+index+`)" class="btn btn-dark">Submit</button>`;   
+  }
+  else{
+  console.log("else",values)
+  console.log("else",err);
+  let contentDiv = document.getElementById("main-content");
+  contentDiv.innerHTML =
+    `<h1>New purchase form</h1>` +
+    makeinput("Purchase ID", "text", values.purchaseId || "", "purchase-id", "Enter purchase ID", err.purchaseId || err.unique||'') +
+    `<div class="mb-3">Name<br>` + makeDD(puProd, values.product||"Product Name", "product-name", err.product||'') +
+    `<div class="mb-3">` + makeinput('Quantity', 'number', values.quantity || '', 'product-quantity', 'Enter quantity', err.quantity||'') + `</div>
+  <button onclick="addmakepurchase(`+index+`)" class="btn btn-dark">Submit</button>`;  
+    }
+}
+
+
+function addmakepurchase(index) {
+  let name = document.getElementById('product-name').value;
+  let quantity = document.getElementById('product-quantity').value;
+  let purchaseId = document.getElementById('purchase-id').value;
+  console.log("Name = ", name);
+  let price = '';
+  let supplier = '';
+
+  let newObj = {
+    Product: name,
+    Quantity: quantity,
+    Price: price,
+    Supplier: supplier,
+    purchaseId: purchaseId,
+  };
+if(!isNaN (index)){
+    if(validateStock(newObj,index)){
+      purchase[index].name = name
+      purchase[index].Quantity = quantity
+      stockView()
+      }
+    else{
+      console.log('errors2: ', errors1);
+      makePurchaseForm(errors1, {
+      purchaseId,
+      product: name,
+      quantity : quantity
+    },index); 
+    }
+  }
+else{
+  if (validateStock(newObj)) {
+    let object = products.find(obj => {
+      return obj.name === name;
+    });
+    price = object.price;
+    supplier = object.supplier;
+    console.log("price = ", price);
+    newObj = {
+      Product: name,
+      Quantity: quantity,
+      Price: price,
+      Supplier: supplier,
+      purchaseId: purchaseId,
+    };
+    purchase.push(newObj);
+    stockView();
+  }
+  else {
+    console.log('errors1: ', errors1);
+    makePurchaseForm(errors1, {
+      purchaseId,
+      product: name,
+      quantity
+    });
+  }
+}
+}
+
+function validateStock(object,index){
+  if(isNaN(index)){
+    
+    let findobj = purchase.find(obj=>{
+      return obj.purchaseId == object.purchaseId 
+    })
+    let flag = true
+    let checkunique = findobj ? flag = false : flag = true
+    errors1.unique = (checkunique) ? '' : ' Purchase id must be unique'
+    errors1.purchaseId = (object.purchaseId) ? '' : 'Purchase id is not defined'
+    errors1.product = (object.Product!='Product Name') ? '' : 'Product name is mandatory'
+    errors1.quantity = object.Quantity ? '' : 'Enter correct quantity'
+    console.log("inner:",errors1);
+    return !(errors1.product || errors1.purchaseId  || errors1.quantity||errors1.unique )
+}
+else{
+  console.log("New data valid");
+  errors1.purchaseId = (object.purchaseId) ? '' : 'Purchase id is not defined'
+  errors1.product = (object.Product!='Product Name') ? '' : 'Product name is mandatory'
+  errors1.quantity = object.Quantity ? '' : 'Quantity cannot be empty'
+  console.log(errors1);
+  return !(errors1.product || errors1.purchaseId  || errors1.quantity||errors1.unique )
+}
+}
+
+function removeStock(index){
+  purchase.splice(index, 1)
+  console.log(products)
+  stockView()
+}
+
+function stockView(array = purchase){
+  let contentDiv = document.getElementById("main-content");
+
+  let str1 = `<div class="container mt-5">
+  <h1>Purchase Table</h1>
+  `+makeDD(puProd,'Select product','prod-name')+
+  makeDD(suppliers,'Select supplier','prod-supplier')+
+  `<button onclick="filtter()" class="btn btn-dark">Filter</button>
+  <table class="table">
+    <thead>
+        <th onclick ="sortTable(1)">Product-ID</th>
+        <th onclick ="sortTable(1)">Product</th>
+        <th onclick ='sortTable(2)'>Quantity</th>
+        <th onclick ='sortTable(3)'>Price</th>
+        <th onclick ='sortTable(4)'>Supplier</th>
+        <th>Modify</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+  </table>
+  </div>`
+  contentDiv.innerHTML = str1
+  let table = document.getElementById("tableBody");
+  let str2 = array.map((item,index)=>
+    "<tr>" +
+      "<td  >" + item.purchaseId + "</td>" +
+      "<td  >" + item.Product + "</td>" +
+      "<td  >" + item.Quantity + "</td>" +
+      "<td  >" + products.find(obj=>obj.name == item.Product).price + "</td>" +
+      "<td  >" + products.find(obj=>obj.name == item.Product).supplier + "</td>" +
+      `<td><button onclick="makePurchaseForm(errors, errors1, ` + index + `)" class="btn btn-dark">Edit</button>
+      <button onclick = "removeStock(`+ index + `)"class="btn btn-danger">Remove</button></td>`+
+    "</tr>"
+  ).join(''); 
+  table.innerHTML = str2
+}
+
+  function filtter(){
+    let prod = document.getElementById('prod-name').value
+    let supplier = document.getElementById('prod-supplier').value
+    console.log(prod);
+    console.log(supplier);
+    console.log(purchase);
+  let purchaseArr = []
+  if(prod && supplier){
+    purchaseArr =  purchase.filter((obj,index)=>{
+      if(prod == obj.Product && supplier == (products.find(o=>{return o.name == obj.Product }).supplier))
+      return obj
+    })
+    console.log('prod and supp: ',purchaseArr);
+}
+if(supplier && prod == 'Select product'){
+  purchaseArr =  purchase.filter(obj=>{
+    if(supplier === products.find(o=>{return o.name == obj.Product }).supplier)
+    return obj
+  })
+  console.log('supplier : ',purchaseArr);
+}
+if(prod && supplier == 'Select supplier'){
+  console.log('filter working prod');
+  purchaseArr =  purchase.filter(obj=>{
+    if (prod === obj.Product)
+    return obj
+  })
+  console.log('prod:',purchaseArr);
+}
+if(prod == 'Select product' && supplier == 'Select supplier'){
+  return
+}
+stockView(purchaseArr)
+}
+
+// Function to sort 
+function sortTable(index){
+  if(index == 1){
+  purchase.sort((a, b) => {
+  return a.Product.localeCompare(b.Product)
+  });
+  stockView()  
+  }
+  else if(2){
+  purchase.sort((a, b) => a.Quantity - b.Quantity);
+  stockView()  
+  }
+  else if(3){
+  purchase.sort((a, b) => a.Price - b.Price);
+  stockView()
+  }
+  else if(4){
+  purchase.sort((a, b) => a.Supplier.localeCompare(b.Supplier));
+  stockView()
+  }
+}
+</script>
+
+</body>
+
+</html>
