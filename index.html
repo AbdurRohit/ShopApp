@@ -72,7 +72,7 @@ nav:hover{
 function init(){
   let str = `<nav class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
-  <a class="navbar-brand" href="#" >Store System</a>
+  <a class="navbar-brand" href="https://abdurrohit.github.io/ShopApp/" >Store System</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -499,18 +499,22 @@ function sortTable1(index) {
 // Call the function to generate the table on page load
 function show2nd() {
 let contentDiv = document.getElementById("main-content");
-let employeesHtml = '<h2>Product view 2</h2><ul class="list-group">';
-employeesHtml+= `
-<div class="row row-cols-3">`
-products.map(obj => {
-    employeesHtml += '<button class="col" id = "show2" ><li class="list-group-item">';
-    employeesHtml += '<strong>Name:</strong> ' + obj.name + '<br>';
-    employeesHtml += '<strong>Price:</strong> ' + obj.price + '<br>';
-    employeesHtml += '<strong>discount:</strong> ' + obj.discount+'<br>'
-    employeesHtml += '<strong>supplier:</strong> ' + obj.supplier+'<br>'
-    employeesHtml += '<strong>delivery:</strong> ' + obj.delivery+'<br>'
-    employeesHtml += '</li></buttons>';
-});
+let employeesHtml= `<h2>Product List - Alternate View</h2>
+    <div class="card-group"> <div class="row row-cols-1 row-cols-md-3 g-4">`
+   
+      products.map((obj,index) => { 
+        employeesHtml+= `<div class="col">
+    <div class="card h-100">`+
+        `<div id="show-`+index+`" class="card-body">`
+
+        employeesHtml += '<strong>Name:</strong> ' + obj.name + '<br>';
+        employeesHtml += '<strong>Price:</strong> ' + obj.price + '<br>';
+        employeesHtml += '<strong>Discount:</strong> ' + obj.discount+'<br>'
+        employeesHtml += '<strong>Supplier:</strong> ' + obj.supplier+'<br>'
+        employeesHtml += '<strong>Delivery:</strong> ' + obj.delivery+'<br>'
+        employeesHtml += '</div></div></div>';
+    });
+employeesHtml += '</div></div>';
 contentDiv.innerHTML = employeesHtml 
 }
 
